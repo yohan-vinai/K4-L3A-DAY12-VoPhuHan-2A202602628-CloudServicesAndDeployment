@@ -26,7 +26,13 @@ Chạy service và gọi `/ask` vài lần. Dán một dòng log JSON bạn thu 
 nêu **hai** việc bạn làm được với dòng log đó mà `print("đã trả lời xong")`
 không làm được.
 
-> *Câu trả lời của bạn*
+Log thu được từ container local:
+
+```json
+{"event":"ask_completed","level":"info","timestamp":"2026-09-28T07:53:28.941376+00:00","user_id":"local-proof","tokens_in":2,"tokens_out":36,"cost_usd":2.19e-05}
+```
+
+> *Tự nêu hai việc có thể làm với log này mà `print()` không làm được.*
 
 ---
 
@@ -42,8 +48,8 @@ docker images | grep agent
 
 | Bản | Dung lượng |
 |-----|-----------|
-| 1 stage (bản đầu) | ... MB |
-| Multi-stage | ... MB |
+| 1 stage (bản đầu) | 1.73 GB (`agent:single`, Docker build thật) |
+| Multi-stage | 297 MB (`day12-agent:cp2-test`, Docker build thật) |
 
 Giải thích: phần dung lượng chênh lệch đó là những gì?
 
@@ -106,7 +112,9 @@ Chạy `docker compose up --scale agent=3` rồi gọi `/ask` nhiều lần vớ
 `X-User-Id`. Quan sát `history_length` trong response. Nếu lịch sử được lưu
 trong một dict Python thay vì Redis, bạn sẽ thấy con số đó thay đổi thế nào?
 
-> *Câu trả lời của bạn*
+Quan sát với 3 replica cùng dùng Redis: `history_length` lần lượt là `0`, `2`, `4`.
+
+> *Tự giải thích kết quả sẽ đổi thế nào nếu lịch sử nằm trong dict của từng process.*
 
 ---
 
